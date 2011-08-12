@@ -1,7 +1,7 @@
 prawn-qrcodes
 =============
 
-An easy way to add QR codes to Prawn-generated PDF files.
+An easy way to add QR codes to PDF files generated with Prawn.
 
 
 Examples
