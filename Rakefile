@@ -12,7 +12,7 @@ Bones {
 	name     'prawn-qrcodes'
 	authors  'Gioele Barabucci'
 	email    'gioele@svario.it'
-	url      'FIXME (project homepage)'
+	url      'http://prawn-qrcodes.rubyforge.org'
 
 	depend_on 'prawn'
 	depend_on 'rqrcode'
