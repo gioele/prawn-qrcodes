@@ -1,6 +1,8 @@
 /announcement.txt
-/coverage
-/doc
-/pkg
+/coverage/
+/doc/
+/pkg/
+/.yardoc/
+
 /version.txt
 /*.gemspec

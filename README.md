@@ -1,14 +1,25 @@
 prawn-qrcodes
 =============
 
-An easy way to add QR codes to PDF files generated with Prawn.
+Add QR codes to PDF files generated with Prawn.
 
+Features
+--------
+
+`prawn-qrcodes` is little Prawn extension that allow you to generate
+and add QR codes to PDF files. It can generate QR codes from
+
+* UTF-8 strings,
+* URIs,
+* integer numbers.
 
 Examples
 --------
 
 The easiest way to add QR codes to your Prawn document is to use the
 `qrcode` function.
+
+	require 'prawn/qrcodes'
 
 	Prawn::Document.generate("qr-example.pdf") do
 		msg = "Hello world, this is a QR code"
@@ -23,6 +34,8 @@ options.
 The layout options allow you to specify how the QR code should be
 placed on the PDF page.
 
+	require 'prawn/qrcodes'
+
 	Prawn::Document.generate("qr-big.pdf") do
 		msg = "Hello world, this is a QR code"
 		text msg
@@ -33,6 +46,8 @@ placed on the PDF page.
 
 The QR options let you change the way the QR codes are generated.
 
+	require 'prawn/qrcodes'
+
 	Prawn::Document.generate("qr-big.pdf") do
 		msg = "Hello world, this is a QR code"
 		text msg
@@ -41,6 +56,8 @@ The QR options let you change the way the QR codes are generated.
 	end
 
 You can mix these options as you like.
+
+	require 'prawn/qrcodes'
 
 	Prawn::Document.generate("qr-big.pdf") do
 		msg = "Hello world, this is a QR code"
@@ -60,7 +77,13 @@ codes.
 Installation
 ------------
 
-	gem install prawn-qrcodes
+`prawn-qrcodes` is available on RubyGems.
+
+	$ gem install prawn-qrcodes
+
+Once it has been installed, you can include it in your application with:
+
+	require 'prawn/qrcodes'
 
 
 Authors

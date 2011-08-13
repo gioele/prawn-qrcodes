@@ -1,18 +1,44 @@
 # This is free and unencumbered software released into the public domain.
 # See the `UNLICENSE` file or <http://unlicense.org/> for more details.
 
+
 require 'prawn'
 
 require 'rqrcode'
 require 'securerandom'
 
 module Prawn::QRCodes
-	def qrcode(qr, opts = {})
-		if qr.is_a? String
-			qr = RQRCode::QRCode.new(qr)
+	# Adds a QR code to the PDF.
+	#
+	# @param [String, RQRCode, Numeric, #to_s] code the content of
+	#     the QR code
+	# @param [Hash] opts the options to generate and to draw the
+	#     QR code with
+	# @option opts [Boolean] :border draw a border around the QR code
+	# @option opts [Symbol] :position horizontal position on the
+	#     PDF page: `:left`, `:center`, `:right`
+	# @option opts [Symbol] :vposition vertial position on the PDF
+	#     page: `:top`, `:center`, `:bottom`
+	# @option opts [Array<Numeric, Numeric>] :fit width and height
+	#     inside which fit the QR code
+	# @option opts [Symbol] :level the error correction level: `:l`,
+	#     `:m`, `:q` or `:h`
+	# @option opts [Fixnum] :size force a certain QR module size
+	#
+	# @example Generating and adding a QR code for "Hello world"
+	#
+	#	pdf.qrcode "Hello world"
+	#
+	# @example Same QR code but printed as a centred 200x200 square
+	#
+	#	pdf.qrcode "Hello world", :fit => [200, 200], :position => :center
+
+	def qrcode(code, opts = {})
+		if code.is_a? String
+			code = RQRCode::QRCode.new(code)
 		end
 
-		qrcode_draw(qr, opts)
+		qrcode_draw(code, opts)
 	end
 
 private
