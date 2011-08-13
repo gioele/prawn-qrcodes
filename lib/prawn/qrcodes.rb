@@ -38,19 +38,19 @@ module Prawn::QRCodes
 	def qrcode(code, opts = {})
 		if code.is_a? RQRCode
 			code = code
-		elsif code.is_a? String
-			opts[:encoding] = qrcode_best_encoding(code) unless opts[:encoding]
-			code = RQRCode::QRCode.new(code, opts)
-		elsif code.is_a? Fixnum
-			opts[:encoding] = :number unless opts[:encoding]
-			code = RQRCode::QRCode.new(code.to_s, opts)
-		elsif code.respond_to(:to_s)
-			str = code.to_s
-			opts[:encoding] = qrcode_best_encoding(string) unless opts[:encoding]
-			code = RQRCode::QRCode.new(str, opts)
 		else
-			msg = code.class.to_s + " cannot be converted to QR code"
-			raise ArgumentError.new(msg)
+			if code.is_a? Fixnum
+				code = code.to_s
+				opts[:encoding] = :number unless opts[:encoding]
+			elsif code.is_a? String || code.respond_to(:to_s)
+				code = code.to_s
+				opts[:encoding] = qrcode_best_encoding(code) unless opts[:encoding]
+			else
+				msg = code.class.to_s + " cannot be converted to QR code"
+				raise ArgumentError.new(msg)
+			end
+
+			code = RQRCode::QRCode.new(code, opts)
 		end
 
 		qrcode_draw(code, opts)
