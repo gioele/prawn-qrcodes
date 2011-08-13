@@ -21,7 +21,7 @@ module Prawn::QRCodes
 	#     page: `:top`, `:center`, `:bottom`
 	# @option opts [Array<Numeric, Numeric>] :fit width and height
 	#     inside which fit the QR code
-	# @option opts [Symbol] :encoding the QR encoding to use:
+	# @option opts [Symbol] :mode the QR mode to use:
 	#     `:utf8`, `:ascii`, `:number`, `:kanji`, `:url`
 	# @option opts [Symbol] :level the error correction level: `:l`,
 	#     `:m`, `:q` or `:h`
@@ -41,10 +41,10 @@ module Prawn::QRCodes
 		else
 			if code.is_a? Fixnum
 				code = code.to_s
-				opts[:encoding] = :number unless opts[:encoding]
+				opts[:mode] = :number unless opts[:mode]
 			elsif code.is_a? String || code.respond_to(:to_s)
 				code = code.to_s
-				opts[:encoding] = qrcode_best_encoding(code) unless opts[:encoding]
+				opts[:mode] = qrcode_best_mode(code) unless opts[:mode]
 			else
 				msg = code.class.to_s + " cannot be converted to QR code"
 				raise ArgumentError.new(msg)
@@ -115,7 +115,7 @@ include Prawn::Images # FIXME: remove this hack, see https://github.com/sandal/p
 		return bounds.width / qr.modules.length
 	end
 
-	def qrcode_best_encoding(string)
+	def qrcode_best_mode(string)
 		seems_ascii = string.each_byte.all? { |x| x <= 0x7f }
 		return seems_ascii ? :ascii : :utf8
 	end
