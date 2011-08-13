@@ -21,6 +21,8 @@ module Prawn::QRCodes
 	#     page: `:top`, `:center`, `:bottom`
 	# @option opts [Array<Numeric, Numeric>] :fit width and height
 	#     inside which fit the QR code
+	# @option opts [Symbol] :encoding the QR encoding to use:
+	#     `:utf8`, `:ascii`, `:number`, `:kanji`, `:url`
 	# @option opts [Symbol] :level the error correction level: `:l`,
 	#     `:m`, `:q` or `:h`
 	# @option opts [Fixnum] :size force a certain QR module size
@@ -34,8 +36,21 @@ module Prawn::QRCodes
 	#	pdf.qrcode "Hello world", :fit => [200, 200], :position => :center
 
 	def qrcode(code, opts = {})
-		if code.is_a? String
-			code = RQRCode::QRCode.new(code)
+		if code.is_a? RQRCode
+			code = code
+		elsif code.is_a? String
+			opts[:encoding] = qrcode_best_encoding(code) unless opts[:encoding]
+			code = RQRCode::QRCode.new(code, opts)
+		elsif code.is_a? Fixnum
+			opts[:encoding] = :number unless opts[:encoding]
+			code = RQRCode::QRCode.new(code.to_s, opts)
+		elsif code.respond_to(:to_s)
+			str = code.to_s
+			opts[:encoding] = qrcode_best_encoding(string) unless opts[:encoding]
+			code = RQRCode::QRCode.new(str, opts)
+		else
+			msg = code.class.to_s + " cannot be converted to QR code"
+			raise ArgumentError.new(msg)
 		end
 
 		qrcode_draw(code, opts)
@@ -98,6 +113,11 @@ include Prawn::Images # FIXME: remove this hack, see https://github.com/sandal/p
 
 	def qrcode_dotsize(qr)
 		return bounds.width / qr.modules.length
+	end
+
+	def qrcode_best_encoding(string)
+		seems_ascii = string.each_byte.all? { |x| x <= 0x7f }
+		return seems_ascii ? :ascii : :utf8
 	end
 end
 

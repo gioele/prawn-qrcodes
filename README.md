@@ -10,6 +10,8 @@ Features
 and add QR codes to PDF files. It can generate QR codes from
 
 * UTF-8 strings,
+* ASCII strings,
+* Kanji strings,
 * URIs,
 * integer numbers.
 
