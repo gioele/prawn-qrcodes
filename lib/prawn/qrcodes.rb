@@ -22,7 +22,7 @@ module Prawn::QRCodes
 	# @option opts [Array<Numeric, Numeric>] :fit width and height
 	#     inside which fit the QR code
 	# @option opts [Symbol] :mode the QR mode to use:
-	#     `:utf8`, `:ascii`, `:number`, `:kanji`, `:url`
+	#     `:utf8`, `:alphanum`, `:number`, `:kanji`, `:url`
 	# @option opts [Symbol] :level the error correction level: `:l`,
 	#     `:m`, `:q` or `:h`
 	# @option opts [Fixnum] :size force a certain QR module size
@@ -116,8 +116,9 @@ include Prawn::Images # FIXME: remove this hack, see https://github.com/sandal/p
 	end
 
 	def qrcode_best_mode(string)
-		seems_ascii = string.each_byte.all? { |x| x <= 0x7f }
-		return seems_ascii ? :ascii : :utf8
+		# FIXME: check for allowed characters
+		seems_alphanum = string.each_byte.all? { |x| x <= 0x7f }
+		return seems_alphanum ? :alphanum : :utf8
 	end
 end
 
